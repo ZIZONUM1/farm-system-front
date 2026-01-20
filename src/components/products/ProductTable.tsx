@@ -34,26 +34,27 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete,
           <tr>
             <th className="py-3 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الاسم</th>
             <th className="py-3 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية</th>
-            <th className="py-3 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">السعر</th>
+            <th className="py-3 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الوصف</th>
             <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
+          
           {products.length && products.map((product) => (
-            <tr key={product.id} className="hover:bg-gray-50">
+            <tr key={product._id} className="hover:bg-gray-50">
               <td className="py-4 px-4 whitespace-nowrap text-right">{product.name}</td>
-              <td className="py-4 px-4 whitespace-nowrap text-right">{product.quantity}</td>
-              <td className="py-4 px-4 whitespace-nowrap text-right">${product.price.toFixed(2)}</td>
+              <td className="py-4 px-4 whitespace-nowrap text-right">{product.amount}</td>
+              <td className="py-4 px-4 whitespace-nowrap text-right">{product.desc}</td>
               <td className="py-4 px-4 whitespace-nowrap text-left">
-                <div className="flex justify-start space-x-2">
+                <div className="flex justify-end space-x-2">
                   <Button
-                    variant="outline"
+                    variant="destructive"
                     size="sm"
                     onClick={() => onEdit(product)}
                     className="flex items-center gap-1"
                   >
                     <Edit className="w-4 h-4" />
-                    تعديل
+                    عرض
                   </Button>
                   <Button
                     variant="destructive"

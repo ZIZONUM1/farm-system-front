@@ -39,9 +39,7 @@ const ProductsPage: React.FC = () => {
     try {
       setLoading(true);
       const productsData = await productsApi.getAll();
-      console.log(productsData.products);
-      
-      setProducts(productsData?.products);
+      setProducts(productsData);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {

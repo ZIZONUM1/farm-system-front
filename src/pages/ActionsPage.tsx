@@ -127,7 +127,7 @@ const ActionsPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {actions.map((action) => (
+                  {actions.length && actions.map((action: Action) => (
                     <tr key={action.id} className="hover:bg-gray-50">
                       <td className="py-4 px-4 whitespace-nowrap text-right">{action.productName}</td>
                       <td className="py-4 px-4 whitespace-nowrap text-right">{formatActionType(action.actionType)}</td>

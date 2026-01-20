@@ -39,7 +39,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete,
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {products.map((product) => (
+          {products.length && products.map((product) => (
             <tr key={product.id} className="hover:bg-gray-50">
               <td className="py-4 px-4 whitespace-nowrap text-right">{product.name}</td>
               <td className="py-4 px-4 whitespace-nowrap text-right">{product.quantity}</td>

@@ -50,7 +50,7 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
               <SelectValue placeholder="اختر منتجًا" />
             </SelectTrigger>
             <SelectContent>
-              {products.map((product) => (
+              {products.length && products.map((product) => (
                 <SelectItem key={product.id} value={product.id}>
                   {product.name}
                 </SelectItem>

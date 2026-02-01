@@ -1,7 +1,7 @@
 import React from "react";
 import type { Product } from "../../types/product";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Eye } from "lucide-react";
 
 interface ProductTableProps {
   products: Product[];
@@ -40,26 +40,41 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete,
         </thead>
         <tbody className="divide-y divide-gray-200">
           
-          {products.length && products.map((product) => (
+          {products.map((product) => (
             <tr key={product._id} className="hover:bg-gray-50">
-              <td className="py-4 px-4 whitespace-nowrap text-right">{product.name}</td>
-              <td className="py-4 px-4 whitespace-nowrap text-right">{product.amount}</td>
-              <td className="py-4 px-4 whitespace-nowrap text-right">{product.desc}</td>
+              <td className="py-4 px-4 whitespace-nowrap text-right font-medium">{product.name}</td>
+              <td className="py-4 px-4 whitespace-nowrap text-right">
+                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                  {product.amount}
+                </span>
+              </td>
+              <td className="py-4 px-4 whitespace-nowrap text-right text-gray-600">
+                {product.desc || "-"}
+              </td>
               <td className="py-4 px-4 whitespace-nowrap text-left">
-                <div className="flex justify-end space-x-2">
+                <div className="flex justify-end space-x-reverse space-x-2">
                   <Button
-                    variant="destructive"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => console.log("View product:", product)}
+                    className="flex items-center gap-1"
+                  >
+                    <Eye className="w-4 h-4" />
+                    عرض
+                  </Button>
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => onEdit(product)}
                     className="flex items-center gap-1"
                   >
                     <Edit className="w-4 h-4" />
-                    عرض
+                    تعديل
                   </Button>
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => onDelete(product.id)}
+                    onClick={() => onDelete(product._id)}
                     className="flex items-center gap-1"
                   >
                     <Trash2 className="w-4 h-4" />

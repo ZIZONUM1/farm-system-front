@@ -1,9 +1,9 @@
 export interface Product {
-  amount: ReactNode;
-  desc: ReactNode;
-  _id: Key | null | undefined;
+  _id: string;
   id: string;
   name: string;
-  quantity: number;
-  price: number;
+  desc?: string;
+  amount: number;
+  createdAt?: string;
+  updatedAt?: string;
 }

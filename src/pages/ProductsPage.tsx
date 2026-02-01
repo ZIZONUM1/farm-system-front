@@ -3,6 +3,7 @@ import type { Product } from "../types/product";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import ProductTable from "../components/products/ProductTable";
 import ProductForm from "../components/products/ProductForm";
+import BalanceHeader from "../components/balance/BalanceHeader";
 import { productsApi } from "../services/products.api";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,12 +39,15 @@ const ProductsPage: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const productsData = await productsApi.getAll();
-      console.log(productsData.products);
+      const response = await productsApi.getAll();
+      console.log(response);
       
-      setProducts(productsData?.products);
+      // Handle both direct array and {products: array} response formats
+      const productsData = response.products || response;
+      setProducts(Array.isArray(productsData) ? productsData : []);
     } catch (error) {
       console.error("Error fetching products:", error);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
@@ -70,7 +74,7 @@ const ProductsPage: React.FC = () => {
     try {
       setIsSubmitting(true);
       await productsApi.delete(productToDelete);
-      setProducts(products.filter(p => p.id !== productToDelete));
+      setProducts(products.filter(p => p._id !== productToDelete));
       setIsAlertOpen(false);
       setProductToDelete(null);
     } catch (error) {
@@ -86,12 +90,12 @@ const ProductsPage: React.FC = () => {
       
       if (editingProduct) {
         // Update existing product
-        const updatedProduct = await productsApi.update(editingProduct.id, productData);
-        setProducts(products.map(p => p.id === editingProduct.id ? updatedProduct : p));
+        const updatedProduct = await productsApi.update(editingProduct._id, productData);
+        setProducts(products.map(p => p._id === editingProduct._id ? updatedProduct.product : p));
       } else {
         // Add new product
         const newProduct = await productsApi.add(productData as Omit<Product, "id">);
-        setProducts([...products, newProduct]);
+        setProducts([...products, newProduct.product]);
       }
       
       setIsModalOpen(false);
@@ -104,6 +108,8 @@ const ProductsPage: React.FC = () => {
 
   return (
     <DashboardLayout>
+      <BalanceHeader />
+      
       <div className="w-full flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">إدارة المنتجات</h2>
         <Button onClick={handleAddProduct}>إضافة منتج</Button>

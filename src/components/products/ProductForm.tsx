@@ -14,15 +14,15 @@ interface ProductFormProps {
 const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel, isSubmitting }) => {
   const [formData, setFormData] = useState<Omit<Product, "id"> | Partial<Product>>({
     name: product?.name || "",
-    quantity: product?.quantity || 0,
-    price: product?.price || 0,
+    amount: product?.amount || 0,
+    desc: product?.desc || "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === "quantity" || name === "price" ? Number(value) : value,
+      [name]: name === "amount" ? Number(value) : value,
     });
   };
 
@@ -45,33 +45,29 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel, 
             placeholder="أدخل اسم المنتج"
           />
         </div>
-        
+                  
         <div>
-          <Label htmlFor="quantity">الكمية</Label>
+          <Label htmlFor="desc">الوصف (اختياري)</Label>
           <Input
-            id="quantity"
-            name="quantity"
-            type="number"
-            min="0"
-            value={formData.quantity}
+            id="desc"
+            name="desc"
+            value={formData.desc || ""}
             onChange={handleChange}
-            required
-            placeholder="أدخل الكمية"
+            placeholder="أدخل وصف المنتج"
           />
         </div>
         
         <div>
-          <Label htmlFor="price">السعر</Label>
+          <Label htmlFor="amount">الكمية</Label>
           <Input
-            id="price"
-            name="price"
+            id="amount"
+            name="amount"
             type="number"
             min="0"
-            step="0.01"
-            value={formData.price}
+            value={formData.amount}
             onChange={handleChange}
             required
-            placeholder="أدخل السعر"
+            placeholder="أدخل الكمية"
           />
         </div>
       </div>

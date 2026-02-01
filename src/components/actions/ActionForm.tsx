@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Product } from "../../types/product";
-import type { ActionRequest, ActionType } from "../../types/action";
+import type { ActionRequest, ActionType, AmountType } from "../../types/action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,20 +16,52 @@ interface ActionFormProps {
   products: Product[];
   onSubmit: (action: ActionRequest) => void;
   isSubmitting: boolean;
+  initialData?: Partial<ActionRequest>;
 }
 
-const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmitting }) => {
+const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmitting, initialData }) => {
   const [formData, setFormData] = useState<ActionRequest>({
-    productId: "",
-    actionType: "harvest",
-    quantity: 0,
+    type: "buy",
+    amountType: "piece",
+    amount: 0,
+    ...initialData
   });
 
-  const handleChange = (name: keyof ActionRequest, value: string | number) => {
+  
+  const [showProductFields, setShowProductFields] = useState<boolean>(true);
+  const [showFinancialFields, setShowFinancialFields] = useState<boolean>(false);
+
+  const handleChange = (name: keyof ActionRequest, value: string | number | boolean) => {
     setFormData({
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleTypeChange = (value: ActionType) => {
+    setFormData({
+      ...formData,
+      type: value,
+    });
+    // Reset product field when switching to financial-only action
+    if (value === "other") {
+      setShowProductFields(false);
+    } else {
+      setShowProductFields(true);
+    }
+  };
+
+  const toggleFinancialFields = () => {
+    setShowFinancialFields(!showFinancialFields);
+    if (!showFinancialFields) {
+      // Reset financial fields when hiding
+      setFormData({
+        ...formData,
+        income: undefined,
+        outcome: undefined,
+        desc: undefined
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,58 +70,164 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Action Type Selection */}
         <div>
-          <Label htmlFor="productId">اختر المنتج</Label>
+          <Label htmlFor="type">نوع الإجراء</Label>
           <Select 
-            value={formData.productId} 
-            onValueChange={(value) => handleChange("productId", value)}
+            value={formData.type} 
+            onValueChange={handleTypeChange}
           >
             <SelectTrigger>
-              <SelectValue placeholder="اختر منتجًا" />
+              <SelectValue placeholder="اختر نوع الإجراء" />
             </SelectTrigger>
             <SelectContent>
-              {products.length && products.map((product) => (
-                <SelectItem key={product.id} value={product.id}>
-                  {product.name}
-                </SelectItem>
-              ))}
+              <SelectItem value="buy">شراء (Buy)</SelectItem>
+              <SelectItem value="other">آخر (Other)</SelectItem>
             </SelectContent>
           </Select>
         </div>
-        
+
+        {/* Amount Type Selection */}
         <div>
-          <Label htmlFor="actionType">نوع الإجراء</Label>
+          <Label htmlFor="amountType">نوع الكمية</Label>
           <Select 
-            value={formData.actionType} 
-            onValueChange={(value: ActionType) => handleChange("actionType", value)}
+            value={formData.amountType} 
+            onValueChange={(value: AmountType) => handleChange("amountType", value)}
           >
             <SelectTrigger>
-              <SelectValue placeholder="اختر إجراءً" />
+              <SelectValue placeholder="اختر نوع الكمية" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="harvest">حصاد</SelectItem>
-              <SelectItem value="watering">ري</SelectItem>
-              <SelectItem value="selling">بيع</SelectItem>
-              <SelectItem value="adding">إضافة كمية</SelectItem>
+              <SelectItem value="piece">قطعة</SelectItem>
+              <SelectItem value="kg">كيلوغرام</SelectItem>
+              <SelectItem value="litre">لتر</SelectItem>
             </SelectContent>
           </Select>
-        </div>
-        
-        <div>
-          <Label htmlFor="quantity">الكمية</Label>
-          <Input
-            id="quantity"
-            type="number"
-            min="0"
-            value={formData.quantity}
-            onChange={(e) => handleChange("quantity", Number(e.target.value))}
-            required
-            placeholder="أدخل الكمية"
-          />
         </div>
       </div>
+
+      {/* Product-related fields */}
+      {showProductFields && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="product">اختر المنتج</Label>
+            <Select 
+              value={formData.product || ""} 
+              onValueChange={(value) => handleChange("product", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="اختر منتجًا" />
+              </SelectTrigger>
+              <SelectContent>
+                {products?.map((product) => (
+                  <SelectItem key={product._id} value={product._id}>
+                    {product.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div>
+            <Label htmlFor="amount">الكمية</Label>
+            <Input
+              id="amount"
+              type="number"
+              min="0"
+              value={formData.amount}
+              onChange={(e) => handleChange("amount", Number(e.target.value))}
+              required={showProductFields}
+              placeholder="أدخل الكمية"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Type Description */}
+      <div>
+        <Label htmlFor="typeDesc">وصف الإجراء (اختياري)</Label>
+        <Input
+          id="typeDesc"
+          value={formData.typeDesc || ""}
+          onChange={(e) => handleChange("typeDesc", e.target.value)}
+          placeholder="وصف تفصيلي للإجراء"
+        />
+      </div>
+
+      {/* Date */}
+      <div>
+        <Label htmlFor="date">التاريخ (اختياري)</Label>
+        <Input
+          id="date"
+          type="date"
+          value={formData.date || ""}
+          onChange={(e) => handleChange("date", e.target.value)}
+        />
+      </div>
+
+      {/* Financial Fields Toggle */}
+      <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+        <div>
+          <Label className="text-sm font-medium">إضافة معلومات مالية</Label>
+          <p className="text-xs text-gray-600">وارد/منصرف/بيان</p>
+        </div>
+        <button
+          type="button"
+          onClick={toggleFinancialFields}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+            showFinancialFields ? "bg-blue-600" : "bg-gray-300"
+          }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              showFinancialFields ? "translate-x-6" : "translate-x-1"
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Financial Fields */}
+      {showFinancialFields && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-blue-50 rounded-lg">
+          <div>
+            <Label htmlFor="income">وارد</Label>
+            <Input
+              id="income"
+              type="number"
+              min="0"
+              step="0.01"
+              value={formData.income || ""}
+              onChange={(e) => handleChange("income", Number(e.target.value))}
+              placeholder="المبلغ الوارد"
+            />
+          </div>
+          
+          <div>
+            <Label htmlFor="outcome">منصرف</Label>
+            <Input
+              id="outcome"
+              type="number"
+              min="0"
+              step="0.01"
+              value={formData.outcome || ""}
+              onChange={(e) => handleChange("outcome", Number(e.target.value))}
+              placeholder="المبلغ المنصرف"
+            />
+          </div>
+          
+          <div className="md:col-span-3">
+            <Label htmlFor="desc">البيان</Label>
+            <Input
+              id="desc"
+              value={formData.desc || ""}
+              onChange={(e) => handleChange("desc", e.target.value)}
+              placeholder="وصف العملية المالية"
+            />
+          </div>
+        </div>
+      )}
       
       <div className="flex justify-end pt-4">
         <Button type="submit" disabled={isSubmitting}>

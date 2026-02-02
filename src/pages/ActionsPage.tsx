@@ -134,22 +134,28 @@ const ActionsPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <BalanceHeader />
-      
-      <div className="w-full mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">إدارة الإجراءات</h2>
-        
-        <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">تنفيذ إجراء</h3>
-          <ActionForm 
-            products={products} 
-            onSubmit={handleActionSubmit} 
-            isSubmitting={isSubmitting}
-          />
+      <div className="space-y-6">
+        {/* Balance Header Section */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <BalanceHeader />
         </div>
+        
+        {/* Actions Management Section */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">إدارة الإجراءات</h2>
+          
+          <div className="space-y-6">
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">تنفيذ إجراء</h3>
+              <ActionForm 
+                products={products} 
+                onSubmit={handleActionSubmit} 
+                isSubmitting={isSubmitting}
+              />
+            </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">سجل الإجراءات</h3>
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">سجل الإجراءات</h3>
           
           {loading ? (
             <div className="flex justify-center items-center h-32">
@@ -224,9 +230,11 @@ const ActionsPage: React.FC = () => {
           )}
         </div>
       </div>
+    </div>
+  </div>
 
-      {/* Action Form Dialog */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+    {/* Action Form Dialog */}
+    <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>

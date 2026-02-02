@@ -108,19 +108,27 @@ const ProductsPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <BalanceHeader />
-      
-      <div className="w-full flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">إدارة المنتجات</h2>
-        <Button onClick={handleAddProduct}>إضافة منتج</Button>
-      </div>
+      <div className="space-y-6">
+        {/* Balance Header Section */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <BalanceHeader />
+        </div>
+        
+        {/* Products Management Section */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="w-full flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">إدارة المنتجات</h2>
+            <Button onClick={handleAddProduct}>إضافة منتج</Button>
+          </div>
 
-      <ProductTable
-        products={products}
-        onEdit={handleEditProduct}
-        onDelete={handleDeleteProduct}
-        loading={loading}
-      />
+          <ProductTable
+            products={products}
+            onEdit={handleEditProduct}
+            onDelete={handleDeleteProduct}
+            loading={loading}
+          />
+        </div>
+      </div>
 
       {/* Product Form Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

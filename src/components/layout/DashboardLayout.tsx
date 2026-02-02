@@ -19,7 +19,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const currentPage = getCurrentPage();
   
   return (
-    <div className="min-h-screen bg-gray-50 w-full">
+    <div className="min-h-screen bg-gray-100 w-full">
       {/* Header */}
       <header className="bg-white shadow-sm w-full">
         <div className="px-4 sm:px-6 lg:px-8 w-full">
@@ -62,7 +62,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <main className="w-full py-8">
         <div className="px-4 sm:px-6 lg:px-8 w-full max-w-none">
-          {children}
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
         </div>
       </main>
     </div>

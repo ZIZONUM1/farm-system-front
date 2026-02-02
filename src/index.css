@@ -1,3 +1,97 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  body {
+    @apply bg-white text-gray-900;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Form Layout Utilities */
+  .form-container {
+    @apply space-y-6;
+  }
+  
+  .form-group {
+    @apply space-y-2;
+  }
+  
+  .form-row {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+  
+  .form-actions {
+    @apply flex justify-end gap-3 pt-6;
+  }
+  
+  /* Enhanced Button Styles */
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 
+           focus-visible:ring-2 focus-visible:ring-blue-500 
+           focus-visible:ring-offset-2 transition-all duration-200 
+           shadow-sm hover:shadow-md active:scale-[0.98];
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-900 hover:bg-gray-200 
+           focus-visible:ring-2 focus-visible:ring-gray-500 
+           focus-visible:ring-offset-2 transition-all duration-200 
+           shadow-sm hover:shadow-md active:scale-[0.98];
+  }
+  
+  .btn-destructive {
+    @apply bg-red-600 text-white hover:bg-red-700 
+           focus-visible:ring-2 focus-visible:ring-red-500 
+           focus-visible:ring-offset-2 transition-all duration-200 
+           shadow-sm hover:shadow-md active:scale-[0.98];
+  }
+  
+  .btn-outline {
+    @apply border border-gray-300 bg-white hover:bg-gray-50 
+           hover:text-gray-900 focus-visible:ring-2 
+           focus-visible:ring-blue-500 focus-visible:ring-offset-2 
+           transition-all duration-200 shadow-sm hover:shadow-md 
+           active:scale-[0.98];
+  }
+  
+  .btn-ghost {
+    @apply hover:bg-gray-100 hover:text-gray-900 
+           focus-visible:ring-2 focus-visible:ring-blue-500 
+           focus-visible:ring-offset-2 transition-all duration-200 
+           active:scale-[0.98];
+  }
+  
+  /* Enhanced Input Styles */
+  .input-primary {
+    @apply flex h-10 w-full rounded-md border border-gray-300 
+           bg-white px-3 py-2 text-sm ring-offset-white 
+           file:border-0 file:bg-transparent file:text-sm file:font-medium 
+           placeholder:text-gray-500 
+           focus-visible:outline-none focus-visible:ring-2 
+           focus-visible:ring-blue-500 focus-visible:ring-offset-2 
+           disabled:cursor-not-allowed disabled:opacity-50 
+           transition-all duration-200 shadow-sm 
+           hover:border-blue-500 focus:border-blue-500;
+  }
+  
+  .input-error {
+    @apply border-red-500 focus-visible:ring-red-500/50 
+           focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+  
+  .input-success {
+    @apply border-green-500 focus-visible:ring-green-500/50 
+           focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+  
+  /* Focus Styles */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 
+           focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+  }
+}

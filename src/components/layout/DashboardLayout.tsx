@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChartNoAxesCombined, Package, Wrench } from "lucide-react";
+import { ChartNoAxesCombined, History, Package, Wrench } from "lucide-react";
+import { productsApi } from "@/services/products.api";
+import { toast } from "sonner";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -8,7 +10,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
-  
+  const [isLoading, setIsLoading] = React.useState(false);
   const getCurrentPage = (): "products" | "actions" | "statistics" => {
     if (location.pathname === "/" || location.pathname === "/products") {
       return "products";
@@ -18,7 +20,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     }
     return "actions";
   };
-  
+  const handleBackup = async () => {
+    try {
+      setIsLoading(true);
+      const backup = await productsApi.backup();
+      console.log(backup);
+      toast.success("Backup created successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to create backup");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const currentPage = getCurrentPage();
   
   return (
@@ -31,6 +45,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
               <h1 className="text-xl font-bold text-gray-900">نظام إدارة المزرعة</h1>
             </div>
             <nav className="flex space-x-4">
+              <button className="px-3 py-2 rounded-md text-sm font-medium bg-green-800 text-gray-200 flex justify-between gap-x-1 cursor-pointer" disabled={isLoading} onClick={handleBackup}>أخذ نسخة إحتياطية <History/> </button>
               <Link
                 to="/"
                 className={`px-3 py-2 rounded-md text-sm font-medium ${

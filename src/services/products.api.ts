@@ -27,4 +27,9 @@ export const productsApi = {
     const response = await api.get(`/products/${id}`);
     return response.data;
   },
+
+  backup: async (): Promise<any> => {
+    const response = await api.get(`/backup`);
+    return response.data;
+  },
 };

@@ -108,7 +108,7 @@ const ActionsPage: React.FC = () => {
         productsApi.getAll(""),
         actionsApi.getAll(params),
       ]);
-      setProducts(productsData.products);
+      setProducts(productsData.productsOptions);
       setActions(actionsData.actions);
       setTotalActions(actionsData.actionsCount || 0);
     } catch (error) {

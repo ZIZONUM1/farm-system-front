@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 function Select({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
-  return <SelectPrimitive.Root data-slot="select" {...props} />
+  return <SelectPrimitive.Root dir="rtl" data-slot="select" {...props} />
 }
 
 function SelectGroup({
@@ -35,7 +35,7 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex w-fit items-center justify-between gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm whitespace-nowrap shadow-sm transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-10 data-[size=sm]:h-9 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 hover:border-blue-500 data-[placeholder]:text-gray-500 [&_svg:not([class*='text-'])]:text-gray-500 aria-invalid:border-red-500 aria-invalid:focus-visible:ring-red-500/50",
+        "flex w-full items-center justify-between gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm whitespace-nowrap shadow-sm transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-10 data-[size=sm]:h-9 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 hover:border-blue-500 data-[placeholder]:text-gray-500 [&_svg:not([class*='text-'])]:text-gray-500 aria-invalid:border-red-500 aria-invalid:focus-visible:ring-red-500/50",
         className
       )}
       {...props}

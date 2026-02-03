@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Package, Wrench } from "lucide-react";
+import { ChartNoAxesCombined, Package, Wrench } from "lucide-react";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -9,9 +9,12 @@ interface DashboardLayoutProps {
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
   
-  const getCurrentPage = (): "products" | "actions" => {
+  const getCurrentPage = (): "products" | "actions" | "statistics" => {
     if (location.pathname === "/" || location.pathname === "/products") {
       return "products";
+    }
+    else if (location.pathname === "/statistics") {
+      return "statistics";
     }
     return "actions";
   };
@@ -41,6 +44,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                   المنتجات
                 </div>
               </Link>
+              
               <Link
                 to="/actions"
                 className={`px-3 py-2 rounded-md text-sm font-medium ${
@@ -52,6 +56,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 <div className="flex items-center gap-2">
                   <Wrench className="w-4 h-4" />
                   الإجراءات
+                </div>
+              </Link>
+              <Link
+                to="/statistics"
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  currentPage === "statistics"
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <ChartNoAxesCombined className="w-4 h-4" />
+                  الإحصائيات
                 </div>
               </Link>
             </nav>

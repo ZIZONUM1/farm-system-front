@@ -4,7 +4,7 @@ import type { Product } from "../types/product";
 
 export const productsApi = {
   getAll: async (params?: any): Promise<any> => {
-    const response = await api.get("/products/all", { params });
+    const response = await api.get(`/products/all?${params}`);
     return response.data;
   },
 

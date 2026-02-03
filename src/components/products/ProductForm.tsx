@@ -14,7 +14,7 @@ interface ProductFormProps {
 const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel, isSubmitting }) => {
   const [formData, setFormData] = useState<Omit<Product, "id"> | Partial<Product>>({
     name: product?.name || "",
-    amount: product?.amount || 0,
+    amount: product?.amount || undefined,
     desc: product?.desc || "",
   });
 

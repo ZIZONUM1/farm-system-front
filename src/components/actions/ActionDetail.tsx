@@ -34,7 +34,7 @@ const ActionDetail: React.FC<ActionDetailProps> = ({ action, product, isOpen, on
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl bg-white rounded-xl shadow-sm p-6 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-right">تفاصيل الإجراء</DialogTitle>
         </DialogHeader>

@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import api from "./api";
 import type { ActionRequest } from "../types/action";
 
 export const actionsApi = {
-  getAll: async (params?: any): Promise<any> => {
-    const response = await api.get("/actions/all", { params });
+  getAll: async (params?: string): Promise<any> => {
+    const response = await api.get(`/actions/all?${params}`);
     return response.data;
   },
 

@@ -28,8 +28,6 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
   });
 
   
-  const [showProductFields, setShowProductFields] = useState<boolean>(true);
-
   const handleChange = (name: keyof ActionRequest, value: string | number | boolean) => {
     setFormData({
       ...formData,
@@ -42,15 +40,8 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
       ...formData,
       type: value,
     });
-    // Reset product field when switching to financial-only action
-    if (value === "other") {
-      setShowProductFields(false);
-    } else {
-      setShowProductFields(true);
-    }
+ 
   };
-
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +57,6 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
           <Select 
             value={formData.type} 
             onValueChange={handleTypeChange}
-            
           >
             <SelectTrigger>
               <SelectValue placeholder="اختر نوع الإجراء" />
@@ -98,8 +88,8 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
       </div>
 
       {/* Product-related fields */}
-      
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+     
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="product">اختر المنتج</Label>
             <Select 
@@ -127,11 +117,12 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
               min="0"
               value={formData.amount}
               onChange={(e) => handleChange("amount", Number(e.target.value))}
-              required={showProductFields}
+              required={true}
               placeholder="أدخل الكمية"
             />
           </div>
-        </div>
+      </div>
+
       {/* Type Description */}
       <div>
         <Label htmlFor="typeDesc">وصف الإجراء (اختياري)</Label>
@@ -154,9 +145,29 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
         />
       </div>
 
+      {/* Financial Fields Toggle */}
+      <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+        <div>
+          <Label className="text-sm font-medium">إضافة معلومات مالية</Label>
+          <p className="text-xs text-gray-600">وارد/منصرف/بيان</p>
+        </div>
+        <button
+          type="button"
+          onClick={toggleFinancialFields}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+            showFinancialFields ? "bg-blue-600" : "bg-gray-300"
+          }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              showFinancialFields ? "translate-x-6" : "translate-x-1"
+            }`}
+          />
+        </button>
+      </div>
 
       {/* Financial Fields */}
-      
+      {showFinancialFields && formData && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-blue-50 rounded-lg">
           <div>
             <Label htmlFor="income">وارد</Label>
@@ -194,7 +205,7 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
             />
           </div>
         </div>
-     
+      )}
       
       <div className="flex justify-end pt-4">
         <Button type="submit" disabled={isSubmitting}>
@@ -206,3 +217,4 @@ const ActionForm: React.FC<ActionFormProps> = ({ products, onSubmit, isSubmittin
 };
 
 export default ActionForm;
+
